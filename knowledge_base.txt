@@ -1,0 +1,46 @@
+=== CONTEXT DATA SECTION ===
+[The actual system metadata, incidents database, and tools list will be provided below]
+
+<system-metadata>
+The CommerceIQ Compute Platform (CCP) is a standardized ETL platform built on Databricks that transforms large-scale ecommerce data into clean, structured datasets. It abstracts infrastructure complexities and simplifies pipeline creation, allowing developers to process raw data in bulk on scheduled intervals. To apply configuration changes, developers must “link” their Git branch to the CCP backend—this ensures the backend reflects the latest commit, as changes in Git aren’t auto-synced. Environments are mapped to branches: feature/develop to beta (for development), release to QA (for validation), and master to prod (for live workloads). Linking can be automated via Bitbucket Pipelines for consistency and traceability, or done manually through a POST API in special cases. CCP uses configuration variables (STRING, NUMBER, DATETIME) declared in YAML at module/workflow/runtime levels to make workflows reusable and dynamic. Variables follow a scope hierarchy, and best practices include naming them descriptively, providing defaults, documenting their purpose, and ensuring consistent typing.
+</system-metadata>
+
+<incidents>
+<incidents>
+<incident>
+<incident-id>CR-001</incident-id>
+<title>Execution stuck in queued state for hours</title>
+<description>Execution id 1234923 is stuck in QUEUED state for more than 4 hours now. when we checked the backend logs we saw a runtime exception due to which execution thread was suspended without setting execution status as failed</description>
+<debug-steps>
+<step>Fetched execution status for the execution id 1234923, we found that total number of `totalTasks` in response was zero this is unusual</step>
+<step>For further debugging used details api for execution id 1234923. Time lapsed from startedAt was more than 4 hours, execution can't be queued for so long</step>
+</debug-steps>
+<resolution>Contacted CCP team</resolution>
+<root-cause>New code change in ccp</root-cause>
+</incident>
+</incidents>
+</incidents>
+
+<tools>
+<tool>
+<name>get_ccp_execution_status</name>
+<display-name>get ccp execution status</display-name>
+<description>Fetches the status for a ccp execution.</description>
+<parameters>execution_id for which status needs to be fetched</parameters>
+<example-usage>if user wants to know the execution status for execution_id '123', the tool get_ccp_execution_status can be used with the execution_id '123'</example-usage>
+</tool>
+<tool>
+<name>get_ccp_execution_details</name>
+<display-name>get ccp execution detaiks</display-name>
+<description>Fetches the details for a ccp execution. This contains more fine grain details then status api</description>
+<parameters>execution_id for which details needs to be fetched</parameters>
+<example-usage>if user wants to know the execution details for execution_id '123', the tool get_ccp_execution_details can be used with the execution_id '123'</example-usage>
+</tool>
+<tool>
+<name>get_time_till_now</name>
+<display-name>Get Timeelapsed Till Now</display-name>
+<description>Gets time elapsed between provided unix timestamp and current timestamp. this should return millsecond elapsed</description>
+<parameters> field other_timestamp which contains other timestamp for comparision </parameters>
+<example-usage>if user wants to check millisconds time elapsed between 175094500 and current timestamp this tool can be used with other_timestamp: 175094500</example-usage>
+</tool>
+</tools>
